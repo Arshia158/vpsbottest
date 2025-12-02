@@ -5,7 +5,7 @@ import requests
 import random
 import time
 
-bot = Robot("توکن")
+bot = Robot("DBBAB0VAVOAWFLDIEJEFYOVLBXOYPYDEAEINKNCYHOMVVYRAMUQEPBUMMINZGMIL")
 
 
 license_keys = [
