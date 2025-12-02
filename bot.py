@@ -5,7 +5,7 @@ from rubka.context import Message
 from rubka.button import InlineBuilder
 
 bot = Robot(
-    token="token",
+    token="DBBAB0VAVOAWFLDIEJEFYOVLBXOYPYDEAEINKNCYHOMVVYRAMUQEPBUMMINZGMIL",
     show_progress=True,
     timeout=900
 )
