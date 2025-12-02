@@ -3,7 +3,7 @@ from rubka.asynco import Robot, Message, filters
 from asyncio import Lock
 from datetime import datetime, timedelta, timezone
 
-bot = Robot("token")
+bot = Robot("DBBAB0VAVOAWFLDIEJEFYOVLBXOYPYDEAEINKNCYHOMVVYRAMUQEPBUMMINZGMIL")
 SETTINGS_FILE = "tts_settings.json"
 
 DEFAULT_SETTINGS = {
