@@ -1,15 +1,15 @@
 # file: bot.py
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
-import os
 
-# توکن را یا اینجا مستقیم بذار، یا به صورت متغیر محیطی: TELEGRAM_TOKEN
-BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "PASTE_YOUR_TOKEN_HERE")
+# توکن رسمی شما
+BOT_TOKEN = "8557797762:AAFOD9vHLWB0lBG_hQj5dFbKUCnqPtbB7Mg"
 
 # دستور /start
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "سلام! من یک ربات ساده‌ام.\n"
+        "سلام! 👋\n"
+        "من یک ربات ساده با کتابخونه رسمی python-telegram-bot هستم.\n"
         "دستورها:\n"
         "• /help راهنما\n"
         "• هر پیام متنی → پاسخ اِکو"
@@ -24,22 +24,13 @@ async def help_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "– هر پیام متنی را اِکو می‌کنم 😉"
     )
 
-# هندلر پیام‌های متنی (Echo)
+# اِکو کردن پیام‌های متنی
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
-    if not text:
-        await update.message.reply_text("متن خالیه!")
-        return
     await update.message.reply_text(f"پیامت: {text}")
 
-# خطایابی ساده
-async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
-    print(f"Error: {context.error}")
-
 def main():
-    if not BOT_TOKEN or BOT_TOKEN == "PASTE_YOUR_TOKEN_HERE":
-        raise RuntimeError("توکن رو وارد کن: env TELEGRAM_TOKEN یا داخل کد.")
-
+    # ساخت اپلیکیشن با توکن رسمی
     app = Application.builder().token(BOT_TOKEN).build()
 
     # ثبت دستورها
@@ -49,12 +40,9 @@ def main():
     # هر پیام متنی
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-    # لاگ خطا
-    app.add_error_handler(error_handler)
-
     # اجرای Polling
     print("Bot is running... Ctrl+C برای توقف")
-    app.run_polling(allowed_updates=Update.ALL_TYPES)
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
