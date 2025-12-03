@@ -2,7 +2,7 @@ import asyncio
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
+TOKEN = "8557797762:AAFOD9vHLWB0lBG_hQj5dFbKUCnqPtbB7Mg"
 
 channel_id: str | None = None
 task: asyncio.Task | None = None
