@@ -1,45 +1,46 @@
 import asyncio
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from aiogram import Bot, Dispatcher
+from aiogram.types import InputMediaPhoto
 
-TOKEN = "8557797762:AAFOD9vHLWB0lBG_hQj5dFbKUCnqPtbB7Mg"
+CHANNEL_USERNAME = "@Me1Arshia"  # یا آیدی عددی کانال مثل -1001234567890
+API_IMAGE_URL = "http://v3.api-free.ir/background"
+EDIT_INTERVAL_SECONDS = 20
 
-channel_id: str | None = None
-task: asyncio.Task | None = None
+# توکن جدید شما
+BOT_TOKEN = "8324484566:AAFZmP5YgEfRofEGgV87g98KGpJTr3hBzwc"
 
-SLEEP_INTERVAL = 0
-BACKGROUND_URL = "http://v3.api-free.ir/background/"
-CAPTION = "✨ لحظه‌ای برای خودت، لحظه‌ای برای آرامش ✨\n\nID : @rubka_library"
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher(bot)
 
+async def post_or_get_message_id():
+    msg = await bot.send_photo(
+        chat_id=CHANNEL_USERNAME,
+        photo=API_IMAGE_URL,
+        caption="Background auto-refresh (updated every 20s)"
+    )
+    return msg.message_id
 
-async def send_backgrounds(app):
-    global channel_id
-    while channel_id:
+async def background_refresher(message_id: int):
+    while True:
         try:
-            await app.bot.send_photo(chat_id=channel_id, photo=BACKGROUND_URL, caption=CAPTION)
-            print("Background sent")
+            media = InputMediaPhoto(
+                media=API_IMAGE_URL,
+                caption="Background auto-refresh (updated every 20s)"
+            )
+            await bot.edit_message_media(
+                chat_id=CHANNEL_USERNAME,
+                message_id=message_id,
+                media=media
+            )
         except Exception as e:
-            print("Error:", e)
-        await asyncio.sleep(SLEEP_INTERVAL)
+            print(f"Edit failed: {e}")
+        await asyncio.sleep(EDIT_INTERVAL_SECONDS)
 
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    global channel_id, task
-
-    channel_id = update.effective_chat.id
-    await context.bot.send_message(chat_id=channel_id, text="✅ ربات در کانال فعال شد و شروع به ارسال بک‌گراند می‌کند")
-
-    if not task or task.done():
-        task = asyncio.create_task(send_backgrounds(context.application))
-
-
-def main():
-    app = ApplicationBuilder().token(TOKEN).build()
-
-    app.add_handler(CommandHandler("start", start))
-
-    app.run_polling()
-
+async def main():
+    message_id = await post_or_get_message_id()
+    asyncio.create_task(background_refresher(message_id))
+    while True:
+        await asyncio.sleep(3600)
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
